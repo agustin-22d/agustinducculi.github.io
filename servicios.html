@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agustín Ducculi — Stack & Servicios</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:      #1B3A5C;
+    --blue:      #2E5F8A;
+    --blue-lt:   #4A82B0;
+    --sky:       #EAF0F6;
+    --sky2:      #F4F7FA;
+    --white:     #FFFFFF;
+    --text:      #1A1A1A;
+    --text2:     #444;
+    --muted:     #7A8A99;
+    --border:    #D8E3EC;
+    --border2:   #C4D4E0;
+    --green:     #1B5E20;
+    --accent:    #2E5F8A;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--sky2);
+    color: var(--text);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  /* ─── HEADER ────────────────────────── */
+  header {
+    background: var(--navy);
+    padding: 28px 40px 26px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .header-left { flex: 1; min-width: 0; }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #7AAFD4;
+    margin-bottom: 10px;
+  }
+  .eyebrow::before {
+    content:'';
+    width:5px; height:5px;
+    border-radius:50%;
+    background: #7AAFD4;
+    flex-shrink: 0;
+    animation: blink 2.4s ease infinite;
+  }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.25} }
+
+  h1 {
+    font-size: clamp(22px, 3.5vw, 32px);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: #FFFFFF;
+    white-space: nowrap;
+  }
+  h1 span { color: #7AAFD4; }
+
+  .subtitle {
+    margin-top: 6px;
+    font-size: 13px;
+    font-weight: 300;
+    color: #A8C4DA;
+    line-height: 1.5;
+    font-style: italic;
+    max-width: 480px;
+  }
+
+  .header-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 5px;
+    flex-shrink: 0;
+  }
+
+  .contacts a {
+    display: block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: #7AAFD4;
+    text-decoration: none;
+    text-align: right;
+    transition: color .2s;
+    line-height: 1.8;
+  }
+  .contacts a:hover { color: #fff; }
+
+  /* ─── BODY ──────────────────────────── */
+  .body-wrap {
+    display: grid;
+    grid-template-columns: 1fr 270px;
+  }
+
+  .col-main {
+    padding: 36px 40px;
+    border-right: 1px solid var(--border);
+  }
+
+  .col-side {
+    padding: 36px 26px;
+    background: var(--white);
+  }
+
+  /* ─── SECTION ───────────────────────── */
+  .section { margin-bottom: 48px; }
+
+  .sec-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9.5px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--blue);
+    font-weight: 500;
+    margin-bottom: 20px;
+  }
+  .sec-label::before {
+    content:'';
+    width:16px; height:2px;
+    background: var(--blue);
+    border-radius:2px;
+    flex-shrink:0;
+  }
+
+  /* ─── CAPACIDADES ───────────────────── */
+  .cap-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .cap-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 22px;
+    position: relative;
+    transition: border-color .2s, box-shadow .2s;
+  }
+  .cap-card:hover {
+    border-color: var(--blue-lt);
+    box-shadow: 0 4px 16px rgba(27,58,92,.08);
+  }
+  .cap-card::before {
+    content:'';
+    position:absolute;
+    top:0; left:20px; right:20px;
+    height:2px;
+    background: var(--navy);
+    border-radius:0 0 2px 2px;
+    opacity:.5;
+    transition: opacity .2s, left .2s, right .2s;
+  }
+  .cap-card:hover::before { opacity:1; left:0; right:0; }
+
+  .cap-ico {
+    font-size: 22px;
+    margin-bottom: 10px;
+  }
+  .cap-name {
+    font-weight: 700;
+    font-size: 13.5px;
+    color: var(--navy);
+    margin-bottom: 7px;
+  }
+  .cap-desc {
+    font-size: 12.5px;
+    color: var(--text2);
+    line-height: 1.6;
+    font-weight: 300;
+  }
+  .cap-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 12px;
+  }
+  .pill {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9.5px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    background: var(--sky);
+    color: var(--blue);
+    border: 1px solid var(--border2);
+  }
+
+  /* ─── VALOR PARA AGENCIAS ───────────── */
+  .val-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .val-row {
+    display: grid;
+    grid-template-columns: 32px 1fr;
+    gap: 14px;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    padding: 15px 18px;
+    align-items: start;
+    transition: border-color .2s;
+  }
+  .val-row:hover { border-color: var(--blue-lt); }
+  .val-n {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--blue);
+    font-weight: 500;
+    padding-top: 1px;
+  }
+  .val-row p {
+    font-size: 13px;
+    color: var(--text2);
+    line-height: 1.65;
+  }
+  .val-row p strong {
+    color: var(--navy);
+    font-weight: 600;
+  }
+
+  /* ─── MODOS DE TRABAJO ──────────────── */
+  .modes {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+  }
+  .mode {
+    background: var(--navy);
+    border-radius: 10px;
+    padding: 18px 18px 16px;
+    color: #fff;
+  }
+  .mode-name {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9.5px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: #7AAFD4;
+    margin-bottom: 8px;
+  }
+  .mode-title {
+    font-weight: 700;
+    font-size: 13px;
+    margin-bottom: 6px;
+  }
+  .mode-desc {
+    font-size: 12px;
+    color: #A8C4DA;
+    line-height: 1.55;
+    font-weight: 300;
+  }
+
+  /* ─── SIDE: STACK ───────────────────── */
+  .sg { margin-bottom: 24px; }
+  .sg-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 9px;
+  }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    padding: 4px 10px;
+    border-radius: 5px;
+    border: 1px solid var(--border);
+    background: var(--sky2);
+    color: var(--text2);
+    transition: all .15s;
+    cursor: default;
+  }
+  .tag:hover {
+    background: var(--sky);
+    border-color: var(--blue-lt);
+    color: var(--navy);
+  }
+  .tag.hi {
+    background: var(--sky);
+    border-color: var(--border2);
+    color: var(--navy);
+    font-weight: 500;
+  }
+
+  .divider {
+    height:1px;
+    background: var(--border);
+    margin: 24px 0;
+  }
+
+  .edu-item { margin-bottom: 13px; }
+  .edu-name {
+    font-weight: 600;
+    font-size: 12px;
+    color: var(--navy);
+    margin-bottom: 1px;
+  }
+  .edu-inst {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+  }
+
+  /* ─── FOOTER ────────────────────────── */
+  footer {
+    background: var(--navy);
+    border-top: 1px solid var(--border);
+    padding: 28px 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .footer-text {
+    font-size: 13px;
+    font-style: italic;
+    color: #A8C4DA;
+    max-width: 540px;
+    line-height: 1.65;
+  }
+
+  .cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: #fff;
+    color: var(--navy);
+    font-weight: 700;
+    font-size: 13px;
+    padding: 12px 26px;
+    border-radius: 8px;
+    text-decoration: none;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: opacity .2s, transform .2s;
+  }
+  .cta:hover { opacity:.9; transform: translateY(-1px); }
+
+  /* ─── RESPONSIVE ────────────────────── */
+  @media (max-width: 860px) {
+    header { padding: 20px 20px 18px; }
+    .header-right { align-items: flex-start; }
+    .contacts a { text-align: left; }
+    .body-wrap { grid-template-columns: 1fr; }
+    .col-main { padding: 28px 20px; border-right: none; border-bottom: 1px solid var(--border); }
+    .col-side { padding: 28px 20px; }
+    .cap-grid { grid-template-columns: 1fr; }
+    .modes { grid-template-columns: 1fr; }
+    footer { padding: 20px; flex-direction: column; gap: 16px; }
+    .footer-text { max-width: 100%; }
+  }
+  @media (max-width: 520px) {
+    h1 { white-space: normal; }
+    .val-row { grid-template-columns: 24px 1fr; gap: 10px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══ HEADER ══════════════════════════ -->
+<header>
+  <div class="header-left">
+    <div class="eyebrow">Freelance · Disponible</div>
+    <h1>Agustín <span>Ducculi</span></h1>
+    <p class="subtitle">Desarrollo, automatización e integración de sistemas. La parte técnica que hace funcionar los proyectos digitales.</p>
+  </div>
+  <div class="header-right">
+    <div class="contacts">
+      <a href="mailto:aguducculi@gmail.com">aguducculi@gmail.com</a>
+      <a href="https://www.linkedin.com/in/aguducculi" target="_blank">linkedin.com/in/aguducculi</a>
+      <a href="https://wa.me/5493584248863" target="_blank">+549 358 424 8863</a>
+    </div>
+  </div>
+</header>
+
+<!-- ═══ BODY ═════════════════════════════ -->
+<div class="body-wrap">
+
+  <!-- ── MAIN ──────────────────────────── -->
+  <div class="col-main">
+
+    <!-- CAPACIDADES -->
+    <div class="section">
+      <div class="sec-label">Qué construyo</div>
+      <div class="cap-grid">
+
+        <div class="cap-card">
+          <div class="cap-ico">🌐</div>
+          <div class="cap-name">Sitios y Landings</div>
+          <div class="cap-desc">Desde sitios institucionales hasta landings de alta conversión con backend serverless. Sin frameworks innecesarios cuando no hacen falta — máxima performance, mínimo costo de mantenimiento.</div>
+          <div class="cap-pills">
+            <span class="pill">HTML/CSS/JS</span>
+            <span class="pill">Next.js</span>
+            <span class="pill">Vercel</span>
+            <span class="pill">SEO técnico</span>
+            <span class="pill">CSP / HSTS</span>
+          </div>
+        </div>
+
+        <div class="cap-card">
+          <div class="cap-ico">⚙️</div>
+          <div class="cap-name">Sistemas de Gestión (ERP/SaaS)</div>
+          <div class="cap-desc">Aplicaciones web a medida para gestionar turnos, finanzas, stock, RRHH y operaciones. Multi-sede, multi-rol, con dashboards en tiempo real y seguridad a nivel base de datos.</div>
+          <div class="cap-pills">
+            <span class="pill">Next.js + React</span>
+            <span class="pill">TypeScript</span>
+            <span class="pill">Supabase</span>
+            <span class="pill">PostgreSQL</span>
+            <span class="pill">Recharts</span>
+          </div>
+        </div>
+
+        <div class="cap-card">
+          <div class="cap-ico">⚡</div>
+          <div class="cap-name">Automatizaciones</div>
+          <div class="cap-desc">Elimino trabajo manual repetitivo: reportes automáticos, flujos de notificación, sincronización entre sistemas, bots de respuesta. En operaciones, en marketing, en administración.</div>
+          <div class="cap-pills">
+            <span class="pill">n8n</span>
+            <span class="pill">Apps Script</span>
+            <span class="pill">Python</span>
+            <span class="pill">VBA</span>
+            <span class="pill">Playwright</span>
+          </div>
+        </div>
+
+        <div class="cap-card">
+          <div class="cap-ico">🔌</div>
+          <div class="cap-name">Integraciones de API</div>
+          <div class="cap-desc">Conecto los sistemas que ya usa el cliente entre sí: CRMs, plataformas de turnos, pasarelas de pago, herramientas de marketing. Sin silos, sin exportaciones manuales.</div>
+          <div class="cap-pills">
+            <span class="pill">REST / Webhooks</span>
+            <span class="pill">ManyChat</span>
+            <span class="pill">Telegram Bot API</span>
+            <span class="pill">Resend</span>
+          </div>
+        </div>
+
+        <div class="cap-card">
+          <div class="cap-ico">📊</div>
+          <div class="cap-name">Analytics & Dashboards</div>
+          <div class="cap-desc">Tableros de conversión, reportes ejecutivos automáticos, KPIs que se actualizan solos. Desde Power BI hasta dashboards web custom para operaciones o para presentar al directorio.</div>
+          <div class="cap-pills">
+            <span class="pill">Power BI</span>
+            <span class="pill">Google Analytics</span>
+            <span class="pill">Looker Studio</span>
+            <span class="pill">Excel avanzado</span>
+          </div>
+        </div>
+
+        <div class="cap-card">
+          <div class="cap-ico">🤖</div>
+          <div class="cap-name">IA Aplicada</div>
+          <div class="cap-desc">Bots inteligentes para atención, calificación de leads y automatización de procesos. IA que resuelve problemas reales de negocio, no demos. Integrada en los flujos que ya existen.</div>
+          <div class="cap-pills">
+            <span class="pill">Claude / Anthropic API</span>
+            <span class="pill">OpenAI</span>
+            <span class="pill">ManyChat AI</span>
+            <span class="pill">Telegram</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- CÓMO AGREGO VALOR -->
+    <div class="section">
+      <div class="sec-label">Cómo agrego valor</div>
+      <div class="val-list">
+        <div class="val-row">
+          <span class="val-n">01</span>
+          <p><strong>Implemento, no solo asesoro.</strong> Landings, integraciones, sistemas, automatizaciones. El resultado es algo que funciona, no un documento con recomendaciones que alguien más tiene que ejecutar.</p>
+        </div>
+        <div class="val-row">
+          <span class="val-n">02</span>
+          <p><strong>Entiendo de negocio, no solo de código.</strong> Sé qué es un lead, un CPL, una tasa de conversión y una tasa de cierre. Cuando trabajo en un proyecto digital, hablo el mismo idioma que el equipo comercial.</p>
+        </div>
+        <div class="val-row">
+          <span class="val-n">03</span>
+          <p><strong>Un recurso que cubre todo el stack.</strong> Desde el sitio hasta el sistema interno, pasando por automatizaciones y reportes. Sin necesidad de coordinar múltiples proveedores técnicos para un mismo proyecto.</p>
+        </div>
+        <div class="val-row">
+          <span class="val-n">04</span>
+          <p><strong>Freelance puro: flexible y sin overhead.</strong> Me adapto al ritmo del proyecto. Disponible por entregable puntual, por sprint o como soporte técnico recurrente según lo que tenga más sentido.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODOS DE TRABAJO -->
+    <div class="section" style="margin-bottom:0">
+      <div class="sec-label">Modalidades</div>
+      <div class="modes">
+        <div class="mode">
+          <div class="mode-name">Proyecto puntual</div>
+          <div class="mode-title">Por entregable</div>
+          <div class="mode-desc">Scope definido, precio fijo. Ideal para sitios, integraciones o automatizaciones específicas.</div>
+        </div>
+        <div class="mode">
+          <div class="mode-name">Colaboración recurrente</div>
+          <div class="mode-title">Retainer mensual</div>
+          <div class="mode-desc">Horas fijas por mes. Recurso técnico disponible para lo que vaya surgiendo en el proyecto.</div>
+        </div>
+        <div class="mode">
+          <div class="mode-name">Trabajo en equipo</div>
+          <div class="mode-title">Por sprint</div>
+          <div class="mode-desc">Me integro al equipo por el tiempo que dure el proyecto. Trabajo como si fuera parte del staff.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── SIDE: STACK ───────────────────── -->
+  <div class="col-side">
+    <div class="sec-label" style="margin-bottom:24px">Stack</div>
+
+    <div class="sg">
+      <div class="sg-label">Frontend</div>
+      <div class="tags">
+        <span class="tag hi">HTML5 / CSS3 / JS</span>
+        <span class="tag hi">Next.js 16</span>
+        <span class="tag">React 19</span>
+        <span class="tag">TypeScript</span>
+        <span class="tag">Tailwind CSS</span>
+        <span class="tag">PHP</span>
+      </div>
+    </div>
+
+    <div class="sg">
+      <div class="sg-label">Backend & bases de datos</div>
+      <div class="tags">
+        <span class="tag hi">Python</span>
+        <span class="tag">Node.js</span>
+        <span class="tag">Serverless</span>
+        <span class="tag hi">Supabase</span>
+        <span class="tag">PostgreSQL</span>
+        <span class="tag">MySQL</span>
+      </div>
+    </div>
+
+    <div class="sg">
+      <div class="sg-label">Automatización</div>
+      <div class="tags">
+        <span class="tag hi">n8n</span>
+        <span class="tag hi">ManyChat</span>
+        <span class="tag">Apps Script</span>
+        <span class="tag">VBA / Excel</span>
+        <span class="tag">Playwright</span>
+        <span class="tag">Telegram Bot</span>
+      </div>
+    </div>
+
+    <div class="sg">
+      <div class="sg-label">IA & APIs</div>
+      <div class="tags">
+        <span class="tag hi">Anthropic API</span>
+        <span class="tag">OpenAI</span>
+        <span class="tag">REST / Webhooks</span>
+        <span class="tag">Resend</span>
+      </div>
+    </div>
+
+    <div class="sg">
+      <div class="sg-label">Analytics</div>
+      <div class="tags">
+        <span class="tag">Power BI</span>
+        <span class="tag">GA4</span>
+        <span class="tag">Looker Studio</span>
+        <span class="tag">GTM</span>
+      </div>
+    </div>
+
+    <div class="sg">
+      <div class="sg-label">Deploy & SEO</div>
+      <div class="tags">
+        <span class="tag hi">Vercel</span>
+        <span class="tag">GitHub / CI-CD</span>
+        <span class="tag">Schema.org</span>
+        <span class="tag">Core Web Vitals</span>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="sg-label" style="margin-bottom:14px">Formación</div>
+    <div class="edu-item">
+      <div class="edu-name">Diplomatura en Data Analytics</div>
+      <div class="edu-inst">UCEMA — en curso</div>
+    </div>
+    <div class="edu-item">
+      <div class="edu-name">Programación Web</div>
+      <div class="edu-inst">UTN</div>
+    </div>
+    <div class="edu-item">
+      <div class="edu-name">Administración de Empresas</div>
+      <div class="edu-inst">Universidad Siglo 21</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="sg-label" style="margin-bottom:10px">Sectores con experiencia</div>
+    <div style="font-size:12.5px; color:var(--text2); line-height:1.8;">
+      Automotriz · Odontología · Retail · Administración y Contabilidad · Consultoría
+    </div>
+
+  </div>
+
+</div>
+
+<!-- ═══ FOOTER ════════════════════════════ -->
+<footer>
+  <p class="footer-text">Si hay algo técnico que necesita resolverse en un proyecto digital — ese soy yo.</p>
+  <a href="https://wa.me/5493584248863" target="_blank" class="cta">Hablemos →</a>
+</footer>
+
+</body>
+</html>
